@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 model = load_model('SalaryModel.h5')
 
-# Mapping dictionaries for categorical variables
+# Mapping dictionary
 carreer_level_mapping = {
  'Supervisor/Coordinator': 4,
  'Employee (non-management & non-supervisor)': 3,
@@ -91,17 +91,17 @@ def predict_salary():
         data = request.json
         carreer_level = carreer_level_mapping.get(data.get('carreer_level'))
         location = location_mapping.get(data.get('location'))
-        experience_level = float(data.get('experience_level'))
+        experience_level = data.get('experience_level')
         education_level = education_level_mapping.get(data.get('education_level'))
         employment_type = employment_type_mapping.get(data.get('employment_type'))
 
-        # Convert mapped values to float and create a NumPy array
-        input_array = np.array([[float(carreer_level), float(location), experience_level, float(education_level), float(employment_type)]])
+        # Convert into array
+        input_array = np.array([[carreer_level, location, experience_level, education_level, employment_type]])
 
-        prediction = model.predict(input_array)
+        prediction = model.predict(input_array) * 10000000
 
         return jsonify({
-            'prediction': float(prediction) * 10000000
+            'prediction': int(prediction)
         })
     
     except Exception as e:
@@ -110,4 +110,4 @@ def predict_salary():
         })
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0.', port=8080)
+    app.run(host='0.0.0.0', port=8080)
