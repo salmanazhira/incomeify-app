@@ -88,6 +88,7 @@ def home():
 @app.route('/predict', methods=['GET','POST'])
 def predict_salary():
     try:
+
         data = request.json
         carreer_level = carreer_level_mapping.get(data.get('carreer_level'))
         location = location_mapping.get(data.get('location'))
@@ -101,13 +102,15 @@ def predict_salary():
         prediction = model.predict(input_array) * 10000000
 
         return jsonify({
-            'prediction': int(prediction)
-        })
+                'status': True,
+                'prediction': int(prediction)
+        }), 200
     
     except Exception as e:
         return jsonify({
+            'status': False,
             'error': str(e)
-        })
+        }), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
