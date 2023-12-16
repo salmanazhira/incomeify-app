@@ -81,11 +81,11 @@ employment_type_mapping = {
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({
-        'success': 'true',
+        'status': True,
         'message': 'API is running!'
-    })
+    }), 200
 
-@app.route('/predict', methods=['GET','POST'])
+@app.route('/predict', methods=['POST'])
 def predict_salary():
     try:
 
