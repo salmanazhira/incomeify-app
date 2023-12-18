@@ -7,7 +7,7 @@ app = Flask(__name__)
 model = load_model('SalaryModel.h5')
 
 # Mapping dictionary
-carreer_level_mapping = {
+career_level_mapping = {
  'Supervisor/Coordinator': 4,
  'Employee (non-management & non-supervisor)': 3,
  'Manager/Assistant Manager': 2,
@@ -90,14 +90,14 @@ def predict_salary():
     try:
 
         data = request.json
-        carreer_level = carreer_level_mapping.get(data.get('carreer_level'))
+        career_level = career_level_mapping.get(data.get('career_level'))
         location = location_mapping.get(data.get('location'))
         experience_level = data.get('experience_level')
         education_level = education_level_mapping.get(data.get('education_level'))
         employment_type = employment_type_mapping.get(data.get('employment_type'))
 
         # Convert into array
-        input_array = np.array([[carreer_level, location, experience_level, education_level, employment_type]])
+        input_array = np.array([[career_level, location, experience_level, education_level, employment_type]])
 
         prediction = model.predict(input_array) * 10000000
 
